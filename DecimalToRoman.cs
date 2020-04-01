@@ -10,6 +10,34 @@ namespace Assignment3Q4
     {
         static void Main(string[] args)
         {
+            int number = 0;
+            Console.WriteLine("Please enter the valid number between 0 to 4999:");
+            try
+            {
+                number = Int32.Parse(Console.ReadLine());
+                Console.WriteLine(Conversion(number));
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            // Wait for user
+
+            Console.ReadKey();
+        }
+
+        //Check Whether the given number is valid or not
+        public static bool IsValidNumber(int number)
+        {
+            if (number > 0 && number < 5000)
+                return true;
+            else
+                return false;
+        }
+
+        public static String Conversion(int number)
+        {
             Expression[] expressions = new Expression[]
                {
                    new RomanThousandExpression(),
@@ -17,21 +45,22 @@ namespace Assignment3Q4
                     new RomanTenExpression(),
                     new RomanOneExpression()
                };
-            int number = 4999;
-            var context = new RomanContext(number);
 
-            foreach (var expression in expressions)
+            if (IsValidNumber(number))
             {
-                expression.Interpret(context);
+                var context = new RomanContext(number);
+
+                foreach (var expression in expressions)
+                {
+                    expression.Interpret(context);
+                }
+                return "Decimal equivalent of " + number + " is " + context.Output;
+            }
+            else
+            {
+                return "The Number provided is not in a required range.";
             }
 
-
-            Console.WriteLine("{0} = {1}",
-              number, context.Output);
-
-            // Wait for user
-
-            Console.ReadKey();
         }
 
     }
